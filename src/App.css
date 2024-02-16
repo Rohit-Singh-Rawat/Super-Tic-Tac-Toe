@@ -1,38 +1,192 @@
+@font-face {
+	font-family: 'Boxy';
+	src: url('BoxyBold.woff2') format('woff2'),
+		url('BoxyBold.woff') format('woff');
+	font-weight: bold;
+	font-style: normal;
+	font-display: swap;
+}
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+	margin: 0 auto;
+	padding: 2rem;
+	text-align: center;
 }
 
-.game-board{
-  display:flex;
-  min-width: 400px;
-  justify-content: center;
+.game-board {
+	display: flex;
+	min-width: 400px;
+	justify-content: center;
 }
-.grid{
-  display: flex;
-  justify-content: center;
-  align-self:center;
-  border: 1px yellow solid;
-  margin :10px 5px;
+.grid {
+	display: flex;
+	justify-content: center;
+	align-self: center;
+	border: 5px black solid;
+	margin: 10px 5px;
+	position: relative;
+	background-color: #0c141e;
 }
-.cell{
-  border: 1px blue solid;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  margin: 5px;
+.cell {
+	border: 3px white solid;
+	width: 50px;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	margin: 5px;
 }
-#1{
-  background-color: pink;
+#1 {
+	background-color: pink;
 }
-.active-grid{
-  background-color: green;
+.active-grid {
+	z-index: 200;
 }
-.inactive-grid{
-  pointer-events: none;
+.active-grid .cell {
+	border-color: green;
+}
+.inactive-grid {
+	pointer-events: none;
+}
+.gridValue {
+	z-index: 100;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	display: flex;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+.game-board > div > div {
+	position: relative;
+}
+.cross {
+	color: red;
+	font-size: 300px;
+}
+.circle {
+	color: rgb(8, 8, 144);
+	font-size: 140px;
+}
+.dash {
+	color: rgb(59, 53, 53);
+	font-size: 300px;
+}
+.cell-circle {
+	width: 100%;
+	max-height: 100%;
+	height: 70%;
+	color: blue;
+}
+.cell-cross {
+	width: 100%;
+	height: 90%;
+	color: red;
+}
+#status > h2 > span > span {
+	display: flex;
+	align-items: center;
+	position: relative;
+	margin-top: 10px;
+}
+
+#status > h2 > span {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 40px;
+}
+.s-cross {
+	font-size: 60px;
+	color: red;
+}
+.s-circle {
+	font-size: 40px;
+	margin: 10px;
+	color: blue;
+}
+.glowing-cross {
+	filter: drop-shadow(0 0 5px rgba(233, 192, 192, 0.5));
+	animation: glowing1 3s infinite alternate;
+}
+
+@keyframes glowing1 {
+	from {
+		filter: drop-shadow(
+			0 0 5px rgba(185, 88, 88, 0.5)
+		); /* Initial glow effect */
+	}
+	to {
+		filter: drop-shadow(
+			0 0 20px rgba(100, 3, 3, 0.5)
+		); /* Stronger glow effect */
+	}
+}
+.glowing-circle {
+	filter: drop-shadow(0 0 5px rgb(184, 174, 239));
+	animation: glowing2 3s infinite alternate;
+}
+
+@keyframes glowing2 {
+	from {
+		filter: drop-shadow(0 0 5px rgb(77, 30, 165));
+	}
+	to {
+		filter: drop-shadow(0 0 20px rgba(9, 1, 35, 1));
+	}
+}
+.glowing-dash {
+	filter: drop-shadow(0 0 5px rgb(184, 174, 239));
+	animation: glowing3 3s infinite alternate;
+}
+
+@keyframes glowing3 {
+	from {
+		filter: drop-shadow(0 0 5px rgb(102, 102, 102));
+	}
+	to {
+		filter: drop-shadow(0 0 20px rgba(0, 0, 0, 1));
+	}
+}
+.glowing-border {
+	border: 2px solid transparent;
+	box-shadow: inset 0 0 2px rgba(253, 253, 253, 0.5);
+	animation: glowing 2s infinite alternate;
+}
+
+@keyframes glowing {
+	from {
+		box-shadow: inset 0 0 2px rgba(241, 241, 243, 0.5);
+	}
+	to {
+		box-shadow: inset 0 0 5px rgba(212, 212, 244, 0.5);
+	}
+}
+#resetBtn {
+	background-color: #1f3540;
+	border: none;
+	padding: 15px 35px;
+	font-size: 20px;
+	border-radius: 30px;
+	margin: 20px;
+	cursor: pointer;
+	font-family: 'Protest Revolution', sans-serif;
+}
+.gameName {
+	font-size: 21px;
+	font-family: Boxy;
+	margin: 0;
+}
+.gameName > h1 {
+	margin-top: 0;
+	letter-spacing: 25px;
+}
+.game {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
 }

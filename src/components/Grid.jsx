@@ -1,8 +1,17 @@
 import Cell from './Cell';
 
-export default function Grid({ handleClick, gridIndex,gridState,className }) {
+export default function Grid({
+	handleClick,
+	gridIndex,
+	gridState,
+	className,
+	board,
+}) {
 	return (
-		<div className={`grid ${className}`}>
+		<div
+			className={`grid ${className}`}
+			style={{ opacity: board[gridIndex] !== null ? 0.3 : 1 }}
+		>
 			{[0, 1, 2].map((row) => {
 				return (
 					<div key={row}>
@@ -11,9 +20,9 @@ export default function Grid({ handleClick, gridIndex,gridState,className }) {
 								<Cell
 									key={row * 3 + col}
 									handleClick={handleClick}
-                                    gridState={gridState}
-                                    gridIndex={gridIndex}
-                                    cellIndex={row*3+col}
+									gridState={gridState}
+									gridIndex={gridIndex}
+									cellIndex={row * 3 + col}
 								></Cell>
 							);
 						})}

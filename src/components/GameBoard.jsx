@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import Grid from './Grid';
+import { RxCross2 } from 'react-icons/rx';
+import { FaRegCircle } from 'react-icons/fa';
+import { BsDash } from 'react-icons/bs';
 
 export default function GameBoard() {
 	const [currentPlayer, setCurrentPlayer] = useState('X');
@@ -8,13 +11,36 @@ export default function GameBoard() {
 		Array(9).fill(Array(9).fill(null))
 	);
 	const [activeGrids, SetActiveGrids] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+	function resetGame() {
+		setCurrentPlayer('X');
+		SetBoard(Array(9).fill(null));
+		setGridState(Array(9).fill(Array(9).fill(null)));
+		SetActiveGrids([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+	}
+	function checkWinner() {
+		const winnerLogic = [
+			[0, 1, 2],
+			[3, 4, 5],
+			[6, 7, 8],
+			[0, 3, 6],
+			[1, 4, 7],
+			[2, 5, 8],
+			[0, 4, 8],
+			[2, 4, 6],
+		];
+
+		return winnerLogic.some((winCond) => {
+			let [a, b, c] = winCond;
+			return (
+				board[a] !== null && board[a] === board[b] && board[a] === board[c]
+			);
+		});
+	}
+	function checkDraw() {
+		return board.every((val) => val !== null);
+	}
+
 	function GridWinnerChecker(gi, state) {
-		if (state[gi].every((val) => val !== null)) {
-			const boardCopy = [...board];
-			boardCopy[gi] = 'D';
-			SetBoard(boardCopy);
-			return;
-		}
 		const winnerLogic = [
 			[0, 1, 2],
 			[3, 4, 5],
@@ -39,6 +65,12 @@ export default function GameBoard() {
 			SetBoard(boardCopy);
 			return;
 		}
+		if (state[gi].every((val) => val !== null)) {
+			const boardCopy = [...board];
+			boardCopy[gi] = 'D';
+			SetBoard(boardCopy);
+			return;
+		}
 	}
 	function handleClick(gi, ci) {
 		if (gridState[gi][ci] !== null) {
@@ -60,31 +92,90 @@ export default function GameBoard() {
 		setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
 	}
 	return (
-		<div className='game-board'>
-			{[0, 1, 2].map((row) => {
-				return (
-					<div key={row}>
-						{[0, 1, 2].map((col) => {
-							return board[row * 3 + col] === null ? (
-								<Grid
-									gridState={gridState}
-									key={row * 3 + col}
-									handleClick={handleClick}
-									gridIndex={row * 3 + col}
-									id={row * 3 + col}
-									className={
-										activeGrids.includes(row * 3 + col)
-											? 'active-grid'
-											: 'inactive-grid'
-									}
-								></Grid>
+		<div>
+			<div className='gameName'>
+				<h1>SUPER TIC TAC TOE</h1>
+			</div>
+			<div className='game'>
+				<div
+					className='game-board'
+					style={{ pointerEvents: checkWinner() ? 'none' : 'auto' }}
+				>
+					{[0, 1, 2].map((row) => {
+						return (
+							<div key={row}>
+								{[0, 1, 2].map((col) => {
+									return (
+										<div key={row * 3 + col}>
+											<Grid
+												gridState={gridState}
+												board={board}
+												handleClick={handleClick}
+												gridIndex={row * 3 + col}
+												id={row * 3 + col}
+												className={
+													activeGrids.includes(row * 3 + col)
+														? 'active-grid'
+														: 'inactive-grid'
+												}
+											></Grid>
+											<div className='gridValue '>
+												{board[row * 3 + col] == 'X' ? (
+													<RxCross2 className='cross glowing-cross'></RxCross2>
+												) : board[row * 3 + col] == 'O' ? (
+													<FaRegCircle className='circle glowing-circle'></FaRegCircle>
+												) : board[row * 3 + col] == 'D' ? (
+													<BsDash className='dash glowing-dash' />
+												) : null}
+											</div>
+										</div>
+									);
+								})}
+							</div>
+						);
+					})}
+				</div>
+				<div>
+					<div id='status'>
+						<h2>
+							{checkWinner() ? (
+								<span>
+									Player
+									<span>
+										{currentPlayer == 'X' ? (
+											<FaRegCircle className='s-circle'></FaRegCircle>
+										) : (
+											<RxCross2 className='s-cross'></RxCross2>
+										)}
+									</span>
+									wins!
+								</span>
+							) : checkDraw() ? (
+								<span>It's a draw!</span>
 							) : (
-								<span key={row * 3 + col}>{board[row * 3 + col]}</span>
-							);
-						})}
+								<span>
+									Next player:
+									<span>
+										{currentPlayer == 'X' ? (
+											<RxCross2 className='s-cross'></RxCross2>
+										) : (
+											<FaRegCircle className='s-circle'></FaRegCircle>
+										)}
+									</span>
+								</span>
+							)}
+						</h2>
 					</div>
-				);
-			})}
+					<div>
+						<button
+							id='resetBtn'
+							onClick={resetGame}
+						>
+							RESET
+						</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 }
